@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 import java.util.Date;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -19,20 +20,44 @@ import br.ce.wcaquino.entidades.Usuario;
 
 public class LocacaoServiceTeste {
 
+	private LocacaoService serv;
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 
+	@Before
+	public void antes() {
+		serv = new LocacaoService();
+	}
+
+	/*
+	 * @After 
+	 * public void depois() { 
+	 * 		System.out.println();
+	 * }
+	 * 
+	 * @BeforeClass 
+	 * public static void antesClass() { 
+	 * 		System.out.println("before");
+	 * }
+	 * 
+	 * @AfterClass 
+	 * public static void depoisClass() {
+	 *  		System.out.println("after");
+	 * }
+	 */
+
 	@Test
 	public void teste() throws Exception {
 
-		LocacaoService ser = new LocacaoService();
+//		LocacaoService ser = new LocacaoService();
 		Usuario user = new Usuario("Usuario 1");
 		Filme filme = new Filme("filme", 4, 5.0);
 
-		Locacao loc = ser.alugarFilme(user, filme);
+		Locacao loc = serv.alugarFilme(user, filme);
 
 		error.checkThat(loc.getValor(), is(equalTo(5.0)));
 		error.checkThat(isMesmaData(loc.getDataLocacao(), new Date()), is(true));
@@ -53,22 +78,22 @@ public class LocacaoServiceTeste {
 	}
 
 	@Test(expected = Exception.class)
-	public void testeLocacao() throws Exception {
-		LocacaoService ser = new LocacaoService();
+	public void Elegante() throws Exception {
+		// LocacaoService ser = new LocacaoService();
 		Usuario user = new Usuario("Usuario 1");
 		Filme filme = new Filme("filme", 0, 5.0);
 
-		ser.alugarFilme(user, filme);
+		serv.alugarFilme(user, filme);
 	}
 
 	@Test
-	public void testeLocacao2() {
-		LocacaoService ser = new LocacaoService();
+	public void Robusta() {
+		// LocacaoService ser = new LocacaoService();
 		Usuario user = new Usuario("Usuario 1");
 		Filme filme = new Filme("filme", 0, 5.0);
 
 		try {
-			ser.alugarFilme(user, filme);
+			serv.alugarFilme(user, filme);
 			Assert.fail("Deveria ter lancado uma excecao");
 		} catch (Exception e) {
 			Assert.assertThat(e.getMessage(), is("Filme sem estoque!"));
@@ -76,14 +101,14 @@ public class LocacaoServiceTeste {
 	}
 
 	@Test(expected = Exception.class)
-	public void testeLocacao3() throws Exception {
-		LocacaoService ser = new LocacaoService();
+	public void Nova() throws Exception {
+		// LocacaoService ser = new LocacaoService();
 		Usuario user = new Usuario("Usuario 1");
 		Filme filme = new Filme("filme", 0, 5.0);
 
-		ser.alugarFilme(user, filme);
+		serv.alugarFilme(user, filme);
 
 		exception.expect(Exception.class);
 		exception.expectMessage("Filme sem estoque!");
-		}
+	}
 }
