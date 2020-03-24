@@ -43,7 +43,7 @@ public class LocacaoService {
 			Double valor = filmes.get(i).getPrecoLocacao();
 			if (i == 2) {
 				valor = valor * 0.75;
-			} 
+			}
 			if (i == 3) {
 				valor = valor * 0.50;
 			}
@@ -60,7 +60,7 @@ public class LocacaoService {
 		// Entrega no dia seguinte
 		Date dataEntrega = new Date();
 		dataEntrega = adicionarDias(dataEntrega, 1);
-		if(DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY)) {
+		if (DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY)) {
 			dataEntrega = adicionarDias(dataEntrega, 1);
 
 		}
