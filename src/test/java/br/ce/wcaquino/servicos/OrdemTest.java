@@ -1,5 +1,6 @@
 package br.ce.wcaquino.servicos;
 
+
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
