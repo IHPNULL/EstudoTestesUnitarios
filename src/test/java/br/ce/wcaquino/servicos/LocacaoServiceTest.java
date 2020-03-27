@@ -115,21 +115,21 @@ public class LocacaoServiceTest {
 	@Test
 	public void devePagar75PctFilme3() throws Exception {
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilmeSemEstoque().agora());
+		List<Filme> filmes = Arrays.asList(umfilme().agora());
 
 		Locacao resultado = service.alugarFilme(usuario, filmes);
 
-		assertThat(resultado.getValor(), is(16.0));
+		assertThat(resultado.getValor(), is(4.0));
 	}
 
 	@Test
 	public void devePagar50PctFilme4() throws Exception {
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilmeSemEstoque().agora());
+		List<Filme> filmes = Arrays.asList(umfilme().agora());
 
 		Locacao resultado = service.alugarFilme(usuario, filmes);
 
-		assertThat(resultado.getValor(), is(19.0));
+		assertThat(resultado.getValor(), is(4.0));
 	}
 
 	@Test

@@ -12,7 +12,7 @@ public class FilmeBuilder {
 	public static FilmeBuilder umfilme() {
 		FilmeBuilder builder = new FilmeBuilder();
 		builder.filme = new Filme();
-		builder.filme.setEstoque(2);
+		builder.filme.setEstoque(6);
 		builder.filme.setNome("O contagio");
 		builder.filme.setPrecoLocacao(4.0);
 		return builder;
