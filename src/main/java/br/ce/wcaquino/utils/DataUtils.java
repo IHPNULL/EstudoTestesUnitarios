@@ -4,6 +4,7 @@ import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
+import static java.util.Calendar.getInstance;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -61,9 +62,9 @@ public class DataUtils {
 	 * @return
 	 */
 	public static boolean isMesmaData(Date data1, Date data2) {
-		Calendar calendar1 = Calendar.getInstance();
+		Calendar calendar1 = getInstance();
 		calendar1.setTime(data1);
-		Calendar calendar2 = Calendar.getInstance();
+		Calendar calendar2 = getInstance();
 		calendar2.setTime(data2);
 		return (calendar1.get(DAY_OF_MONTH) == calendar2.get(DAY_OF_MONTH))
 				&& (calendar1.get(MONTH) == calendar2.get(MONTH))
@@ -78,7 +79,7 @@ public class DataUtils {
 	 * @return
 	 */
 	public static boolean verificarDiaSemana(Date data, int diaSemana) {
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = getInstance();
 		calendar.setTime(data);
 		return calendar.get(DAY_OF_WEEK) == diaSemana;
 	}

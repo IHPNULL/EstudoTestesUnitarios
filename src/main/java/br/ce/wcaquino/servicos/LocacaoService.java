@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.ce.wcaquino.daos.LocacaoDAO;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -15,8 +16,12 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoService {
 
+	private LocacaoDAO dao;
+	private SPCService spcSERVICE;
+	private EmailServices emailServ;
+
 	@SuppressWarnings("unused")
-	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
+	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws Exception {
 
 		Double valorTotal = 0.0;
 
@@ -33,6 +38,19 @@ public class LocacaoService {
 				throw new FilmeSemEstoqueException();
 			}
 		}
+
+		boolean negativado;
+
+		try {
+			negativado = spcSERVICE.possuiNegativacao(usuario);
+		} catch (Exception e) {
+			throw new LocadoraException("Problemas com SPC, tente novamente");
+		}
+
+		if (spcSERVICE.possuiNegativacao(usuario)) {
+			throw new LocadoraException("Usuario negativado no SPC");
+		}
+
 		Locacao locacao = new Locacao();
 		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
@@ -67,9 +85,39 @@ public class LocacaoService {
 		locacao.setDataRetorno(dataEntrega);
 
 		// Salvando a locacao...
-		// TODO adicionar método para salvar
-
+		dao.salvar(locacao);
 		return locacao;
+	}
+
+	public void notificarAtrasos() {
+		List<Locacao> locacoes = dao.obterLocacoesPendentes();
+		for (Locacao locacao : locacoes) {
+			if (locacao.getDataRetorno().before(new Date())) {
+				emailServ.notificarAtraso(locacao.getUsuario());
+			}
+		}
+	}
+
+	public void prorrogarLocacao(Locacao locacao, int dias) {
+		Locacao novaLocacao = new Locacao();
+		novaLocacao.setUsuario(locacao.getUsuario());
+		novaLocacao.setFilmes(locacao.getFilmes());
+		novaLocacao.setDataLocacao(new Date());
+		novaLocacao.setDataRetorno(DataUtils.obterDataComDiferencaDias(dias));
+		novaLocacao.setValor(locacao.getValor() * dias);
+		dao.salvar(novaLocacao);
+	}
+
+	public void setLocacaoDAO(LocacaoDAO dao) {
+		this.dao = dao;
+	}
+
+	public void setSPCService(SPCService spc) {
+		spcSERVICE = spc;
+	}
+
+	public void setEmailService(EmailServices email) {
+		emailServ = email;
 	}
 
 }
